@@ -21,12 +21,21 @@ router.post(
     ).isLength({ min: 6})
   ],
 
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
       return res.status(400).json({errors: errors.array()});
     }
-    res.send('User route')
+
+    const { name, email, password } = req.body;
+    try{
+
+      res.send('User route')
+    } catch(err){
+      console.err(err.message);
+      res.status(500).send('Server Error');
+    }
+    
   });
 
 module.exports = router;
