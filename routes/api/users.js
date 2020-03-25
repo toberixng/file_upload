@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../../models/User');
+
 const {
   check,
   validationResult
@@ -29,6 +31,11 @@ router.post(
 
     const { name, email, password } = req.body;
     try{
+      let user = await User.findOne({ email });
+
+      if(user){
+        res.status(400).json({ errors: [{ msg: 'User already exists' }]});
+      }
 
       res.send('User route')
     } catch(err){
